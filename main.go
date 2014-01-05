@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -91,6 +92,8 @@ func getLatestVideos(ytChan string, itemChan chan<- Item, status chan<- error) {
 	status <- err
 }
 
+var vidID = regexp.MustCompile(`v=(.*?)&`)
+
 func main() {
 	subs, err := subscribedTo()
 	if err != nil {
@@ -105,6 +108,11 @@ func main() {
 	go func() {
 		for it := range itemChan {
 			it.Title = fmt.Sprintf("[%s] %s", it.Author, it.Title)
+
+			if m := vidID.FindStringSubmatch(it.Link); len(m) == 2 {
+				it.GUID = "video:" + m[1]
+			}
+
 			items = append(items, it)
 		}
 	}()
