@@ -6,7 +6,7 @@ Combine multiple YouTube user feeds into a single RSS-Feed.
 Compiling
 ---------
 
-`go get github.com/kch42/youtube-feed`
+`go get github.com/silvasur/youtube-feed`
 
 Usage
 -----
